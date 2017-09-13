@@ -81,7 +81,7 @@ def solve(num):
         pair_func(factor_array)
     f = factors_count
     factors_count = 0
-    print(used_factors)
+    # print(used_factors)
     return f
 
 if __name__ == '__main__':

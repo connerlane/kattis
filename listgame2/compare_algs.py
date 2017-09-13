@@ -5,10 +5,12 @@ while True:
 	lg2 = listgame2.solve(i)
 	a2 = approach2.solve(i)
 	if lg2 != a2:
-		print(i)
-		print(lg2)
-		print(a2)
-		break
+		with open("diff.txt", "a") as fh:
+			fh.write("for input: " + str(i))
+			fh.write("\nconner_michael: " + str(lg2))
+			fh.write("\ngavin: " + str(lg2) + "\n\n")
+			i += 1
+		
 	else:
 		i += 1
 		print(i)
