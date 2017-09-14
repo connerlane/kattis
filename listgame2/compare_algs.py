@@ -8,7 +8,7 @@ while True:
 		with open("diff.txt", "a") as fh:
 			fh.write("for input: " + str(i))
 			fh.write("\nconner_michael: " + str(lg2))
-			fh.write("\ngavin: " + str(lg2) + "\n\n")
+			fh.write("\ngavin: " + str(a2) + "\n\n")
 			i += 1
 		
 	else:
