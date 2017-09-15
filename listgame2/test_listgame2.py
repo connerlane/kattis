@@ -54,8 +54,26 @@ def test_43():
 def test_864():
     assert listgame2.solve(864) == 4
 
+def test_1000():
+    assert listgame2.solve(1000) == 4
+
 def test_10368():
     assert listgame2.solve(10368) == 6
 
 def test_112500():
     assert listgame2.solve(112500) == 6
+
+def test_165888():
+    assert listgame2.solve(165888) == 7
+
+def test_451008():
+    assert listgame2.solve(451008) == 7
+
+def test_500000():
+    assert listgame2.solve(500000) == 6
+
+def test_1620000():
+    assert listgame2.solve(1620000) == 8
+
+def test_1764000():
+    assert listgame2.solve(1764000) == 8

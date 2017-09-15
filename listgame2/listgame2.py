@@ -93,7 +93,9 @@ def solve(num):
     global factors_count
     import math
     import operator
+
     used_factors = set()
+    dummy = used_factors
     factors = {}
     i = 2
     while i <= math.sqrt(num):
@@ -111,10 +113,17 @@ def solve(num):
     else:
         factors[num] = 1 
 
-    for fact, amount in factors.items():
-        used_factors.add(fact)
-        factors[fact] -= 1
-        factors_count += 1
+    for key, value in factors.items():
+        y = 1
+        while True:
+            if factors[key] - y >= 0:
+                used_factors.add(key ** y)
+                factors[key] -= y
+                factors_count += 1
+                y += 1
+
+            else:
+                break
 
     sorted_factors = sorted(factors.items(), key=operator.itemgetter(1))
     factor_array = []
