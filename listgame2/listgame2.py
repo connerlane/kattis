@@ -1,106 +1,144 @@
-from random import shuffle
-import time
+used_factors = set()
+factors_count = 0
 
-def _inner(some_list, count, j,
-           used_factors, array_stack, checked_at_level):
+def _inner2(some_list, count, j):
+    global used_factors
+    global factors_count
     test_num = some_list[0]
     for k in range(0, count):
         test_num *= some_list[j + k]
-    if test_num not in used_factors and test_num not in checked_at_level:
-        checked_at_level.append(test_num)
-        array_stack.append(list(some_list))
-        for z in range(0, count):
-            del some_list[j + k - z]
-        del some_list[0]
-        return test_num
-    return None
+        if test_num not in used_factors:
+            used_factors.add(test_num)
+            factors_count += 1
+            for z in range(0, count):
+                del some_list[j + k - z]
+            del some_list[0]
+            return True
+    return False
 
-def divide_multiset(multiset):
-    shuffle(multiset)
-    most_factors_so_far = []
-    
-    # Declare stacks needed
-    count_stack = []
-    array_stack = []
-    factors_stack = []
-    factors_checked_at_this_level_stack = []
-    current_used_factors = []
-    factors_checked_at_this_level = []
+def pair_func2(some_list):
+    global factors_count
+    global used_factors
     count = 1
-
-    # Remove one of each type and add to current_used_factors
-    m_length = len(multiset)
-    for i in range(1, m_length + 1):
-        number = multiset[m_length - i]
-        if number not in current_used_factors:
-            current_used_factors.append(number)
-            multiset.remove(number)
-
-    # Short circuit if only one of each type of factor
-    if not multiset:
-        return current_used_factors
-
-    # Otherwise, add starting values to stacks
-    factors_stack.append(list(current_used_factors))
-    factors_checked_at_this_level_stack.append(list(current_used_factors))
-    count_stack.append(count)
-    array_stack.append(list(multiset))
-    most_factors_so_far = list(current_used_factors)
-
-    # Begin loop
-
-    while factors_stack:
-        cur_type = multiset[0]
-        while count < len(multiset):
-            if multiset[0] != cur_type:
-                cur_type = multiset[0]
-                count = 1
-            for j in range(1, len(multiset) - count + 1):
-                possible_factor = _inner(multiset, count, j,
-                          current_used_factors,
-                          array_stack, factors_checked_at_this_level)
-                if possible_factor:
-                    factors_stack.append(list(current_used_factors))
-                    current_used_factors.append(possible_factor)
-                    count_stack.append(count)
-                    factors_checked_at_this_level_stack.append(list(factors_checked_at_this_level))
-                    factors_checked_at_this_level = []
-                    if len(current_used_factors) >= len(most_factors_so_far):
-                        most_factors_so_far = current_used_factors
-                    break
-                elif j == len(multiset) - count:
-                    count += 1
+    dummy = used_factors
+    cur_type = some_list[0]
+    while (count < len(some_list)):
+        if some_list[0] != cur_type:
+            cur_type = some_list[0]
+            count = 1
+        for j in range(1, len(some_list) - count + 1):
+            if (_inner2(some_list, count, j) == True):
+                break
+            elif j == len(some_list) - count:
+                count += 1
+    if some_list:
+        last_fact = 1
+        for unused_element in some_list:
+            last_fact *= unused_element
+        if last_fact not in used_factors:
+            used_factors.add(last_fact)
+            factors_count += 1
+        else:
+            sorted_factors = sorted(used_factors)
+            highest_factor = sorted_factors.pop()
+            used_factors.remove(highest_factor)
+            used_factors.add(highest_factor * last_fact)
 
 
-        current_used_factors = factors_stack.pop()
-        count = count_stack.pop()
-        multiset = array_stack.pop()
-        factors_checked_at_this_level = factors_checked_at_this_level_stack.pop()
-    # print(most_factors_so_far)
-    return most_factors_so_far
+def _inner(some_list, count, j):
+    global used_factors
+    global factors_count
+    test_num = some_list[0]
+    for k in range(0, count):
+        test_num *= some_list[len(some_list) - j - k]
+        if test_num not in used_factors:
+            used_factors.add(test_num)
+            factors_count += 1
+            for z in range(0, count):
+                del some_list[len(some_list) - j - z]
+            del some_list[0]
+            return True
+    return False
 
+def pair_func(some_list):
+    global factors_count
+    global used_factors
+    count = 1
+    dummy = used_factors
+    cur_type = some_list[0]
+    while (count < len(some_list)):
+        if some_list[0] != cur_type:
+            cur_type = some_list[0]
+            count = 1
+        for j in range(1, len(some_list) - count + 1):
+            if (_inner(some_list, count, j) == True):
+                break
+            elif j == len(some_list) - count:
+                count += 1
+    if some_list:
+        last_fact = 1
+        for unused_element in some_list:
+            last_fact *= unused_element
+        if last_fact not in used_factors:
+            used_factors.add(last_fact)
+            factors_count += 1
+        else:
+            sorted_factors = sorted(used_factors)
+            highest_factor = sorted_factors.pop()
+            used_factors.remove(highest_factor)
+            used_factors.add(highest_factor * last_fact)
 
 def solve(num):
-    from math import sqrt
+    global used_factors
+    global factors_count
+    import math
     import operator
-    prime_factors = []
+    used_factors = set()
+    factors = {}
     i = 2
-    while i <= sqrt(num):
+    while i <= math.sqrt(num):
         if num % i == 0:
-            prime_factors.append(i)
+            if i in factors:
+                factors[i] += 1
+            else:
+                factors[i] = 1
             num //= i
             i = 2
             continue
         i += 1
-    prime_factors.append(num)
-    print(prime_factors)
-    a_run = len(divide_multiset(list(prime_factors)))
-    b_run = len(divide_multiset(prime_factors))
-    return max(a_run, b_run)
+    if num in factors:
+        factors[num] += 1
+    else:
+        factors[num] = 1 
+
+    for fact, amount in factors.items():
+        used_factors.add(fact)
+        factors[fact] -= 1
+        factors_count += 1
+
+    sorted_factors = sorted(factors.items(), key=operator.itemgetter(1))
+    factor_array = []
+    for pair in sorted_factors:
+        for x in range(0, pair[1]):
+            factor_array.append(pair[0])
+    saved_initial_facts = factors_count
+    saved_used_factors = set(used_factors)
+    f1 = 0
+    f2 = 0
+    if factor_array:
+        factor_array2 = list(factor_array)
+        pair_func(factor_array)
+        f1 = factors_count
+        # print(used_factors)
+        used_factors = set(saved_used_factors)
+        factors_count = saved_initial_facts
+        pair_func2(factor_array2)
+        f2 = factors_count
+    f = factors_count
+    factors_count = 0
+    # print(used_factors)
+    return (max(f1, f2, f))
 
 if __name__ == '__main__':
     input_number = int(input())
-    start_time = time.time()
     print(solve(input_number))
-    finish_time = time.time()
-    print(finish_time - start_time)
