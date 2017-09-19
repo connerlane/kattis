@@ -3,13 +3,9 @@ import random
 import math
 
 def rabinMiller(num):
-    # Returns True if num is a prime number.
-
     s = num - 1
     t = 0
     while s % 2 == 0:
-        # keep halving s while it is even (and use t
-        # to count how many times we halve s)
         s = s // 2
         t += 1
 
@@ -105,30 +101,25 @@ def solve(inp):
     i = 2
     number = inp
     flag = True
-    limit = inp**0.5
-    while i <= limit:
-        if i > 100000:
+    square_root = inp ** 0.5
+    while i <= square_root:
+        if flag:
+            if is_prime(inp):
+                return len(backtrack(factors_list, number // inp)) + 1
+            else:
+                flag = False
+        if i > 100000: # Cube root of 10^15
             cur_n = 0
             for m in factors_list:
                 cur_n *= m
             if math.sqrt(inp).is_integer():
                 return len(backtrack(factors_list, cur_n)) + 1
             return len(backtrack(factors_list, cur_n)) + 2
-        if flag:
-            if is_prime(inp):
-                factors_list.append(inp)
-                return len(backtrack(factors_list, number))
-            for n in factors_list:
-                if inp % n == 0:
-                    if is_prime(inp // n):
-                        factors_list.append(inp)
-                        return len(backtrack(factors_list, number))
-            flag = False
         if inp % i == 0:
             flag = True
             factors_list.append(i)
             inp //= i
-            limit = inp**0.5
+            square_root = inp ** 0.5
         i += 1
     if inp != 1:
         factors_list.append(inp)
