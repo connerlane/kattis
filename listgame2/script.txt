@@ -1,0 +1,12 @@
+python3 lsit[K[K[Kistgame2/listgame2.py
+165888
+{2, 3, 4, 6, 8, 144}
+6
+(py3env) Conners-MBP:kattis connerlane$ python3 listgame2/listgame2.py
+165888
+[2, 3, 4, 6, 8, 9, 16]
+7
+(py3env) Conners-MBP:kattis connerlane$ exit
+exit
+
+Script done on Wed Sep 13 23:35:50 2017

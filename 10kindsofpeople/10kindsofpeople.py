@@ -19,8 +19,8 @@ class Point:
 
 
 def in_range(point):
-    if (0 <= point.r <= r - 1) and (0 <= 
-        point.c <= c - 1):
+    if (0 <= point.r <= r - 1) and (0 <=
+                                    point.c <= c - 1):
         return True
     return False
 
@@ -50,7 +50,7 @@ def dfs(mat, start, goal, valid_type):
     return _do_dfs(mat, start, goal, valid_type, visited, path)
 
 
-for j in range(0, num_queries):
+for j in range(num_queries):
     r1, c1, r2, c2 = [eval(i) for i in input().split()]
     start_type = matrix[r1 - 1][c1 - 1]
     start = Point(r1 - 1, c1 - 1)
@@ -59,7 +59,7 @@ for j in range(0, num_queries):
     if found:
         if (start_type == 0):
             print("binary")
-        else:
+        elif (start_type == 1):
             print("decimal")
     else:
         print("neither")
