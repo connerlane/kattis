@@ -20,16 +20,16 @@ class prefix_tree:
         self.tree = tree_node("", None)
 
     def get_all_children(self, node, all_children):
+        if node.end_of_word:
+            d = node
+            word = []
+            while d.parent:
+                word.append(d.character)
+                d = d.parent
+            word_string = "".join(reversed(word))
+            all_children.append(word_string)
         for k in node.children:
             c = node.children[k]
-            if c.end_of_word:
-                d = c
-                word = []
-                while d.parent:
-                    word.append(d.character)
-                    d = d.parent
-                word_string = "".join(reversed(word))
-                all_children.append(word_string)
             self.get_all_children(c, all_children)
         return all_children
 
