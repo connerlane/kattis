@@ -5,6 +5,8 @@ r, c = [eval(i) for i in input().split()]
 matrix = [[eval(i) for i in list(input())] for y in range(r)]
 num_queries = eval(input())
 
+# for row in matrix:
+#     print("".join([str(i) for i in row]))
 
 class Point:
     def __init__(self, r, c):
