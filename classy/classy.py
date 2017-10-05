@@ -1,6 +1,3 @@
-cases = int(input())
-
-
 class Person:
     def __init__(self, name, rank):
         self.name = name[:-1]
@@ -12,25 +9,25 @@ class Person:
         c = max(a, b)
         for x in range(1, c + 1):
             if x <= a:
-                sr = self.rank[a - x]
+                self_rank = self.rank[a - x]
             else:
-                sr = "middle"
+                self_rank = "middle"
             if x <= b:
-                tr = other.rank[b - x]
+                other_rank = other.rank[b - x]
             else:
-                tr = "middle"
+                other_rank = "middle"
 
-            if sr == "upper" or tr == "upper":
-                if sr != "upper":
+            if self_rank == "upper" or other_rank == "upper":
+                if self_rank != "upper":
                     return True
-                elif tr != "upper":
+                elif other_rank != "upper":
                     return False
                 else:
                     continue
-            if sr == "middle" or tr == "middle":
-                if sr != "middle":
+            if self_rank == "middle" or other_rank == "middle":
+                if self_rank != "middle":
                     return True
-                elif tr != "middle":
+                elif other_rank != "middle":
                     return False
                 else:
                     continue
@@ -39,13 +36,15 @@ class Person:
         return True
 
 
-for i in range(cases):
-    people = int(input())
-    people_list = []
-    for j in range(people):
-        inp = input().split()
-        people_list.append(Person(inp[0], inp[1]))
-    people_list.sort(reverse=True)
-    for p in people_list:
-        print(p.name)
-    print("=" * 30)
+if __name__ == "__main__":
+    cases = int(input())
+    for i in range(cases):
+        people = int(input())
+        people_list = []
+        for j in range(people):
+            inp = input().split()
+            people_list.append(Person(inp[0], inp[1]))
+        people_list.sort(reverse=True)
+        for p in people_list:
+            print(p.name)
+        print("=" * 30)
